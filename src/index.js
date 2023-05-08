@@ -5,7 +5,7 @@ const usersCollection = db.collection("users");
 
 const run = async () => {
   try {
-    await getUsersExample();
+    //await getUsersExample();
     // await task1();
     // await task2();
     // await task3();
@@ -45,7 +45,8 @@ async function getUsersExample () {
 // - Get all users, sort them by age (ascending), and return only 5 records with firstName, lastName, and age fields.
 async function task1 () {
   try {
-
+    const users = await usersCollection.find().sort({ age: 1 }).limit(5).project({ firstName: 1, lastName: 1, age: 1 }).toArray();
+    console.log('task1', users);
   } catch (err) {
     console.error('task1', err)
   }
