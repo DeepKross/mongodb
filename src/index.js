@@ -8,7 +8,7 @@ const run = async () => {
     //await getUsersExample();
     // await task1();
     // await task2();
-    // await task3();
+     await task3();
     // await task4();
     // await task5();
     // await task6();
@@ -55,7 +55,18 @@ async function task1 () {
 // - Add new field 'skills: []" for all users where age >= 25 && age < 30 or tags includes 'Engineering'
 async function task2 () {
   try {
-    
+    const users = await usersCollection.updateMany(
+        {
+          $or: [
+            {age: {$gte: 25, $lt: 30}},
+            {tags: {$in: ['Engineering']}}
+          ],
+          skills: {$exists: false}
+        },
+        { $set: { skills: [] }
+        }
+    );
+    console.log('task2', users);
   } catch (err) {
     console.error('task2', err)
   }
@@ -65,7 +76,12 @@ async function task2 () {
 //   Filter: the document should contain the 'skills' field
 async function task3() {
   try {
-
+    const users = await usersCollection.findOneAndUpdate(
+        {skills: {$exists: true}},
+        {$push: {skills: {$each: ['js', 'git']}}},
+        {returnDocument: 'after'}
+    );
+    console.log('task3', users);
   } catch (err) {
     console.error('task3', err)
   }
